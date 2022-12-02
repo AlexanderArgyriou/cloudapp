@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rest-example
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: rest-example
+        tier: backend
+    spec:
+      containers:
+        - name: cloudapp
+          image: localhost.localstack.cloud:4510/cloud-app-repo:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          env:
+            - name: GET_HOSTS_FROM
+              value: dns
+          ports:
+            - containerPort: 8080
+  selector:
+    matchLabels:
+      app: rest-example
+      tier: backend
